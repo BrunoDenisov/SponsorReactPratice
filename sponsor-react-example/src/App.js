@@ -8,6 +8,7 @@ function HideForm(){
 
   if(divHide.style.display ==="none" || divHide.style.display===""){
     divHide.style.display ="block";
+    return true;
   } else {
     divHide.style.display="none";
   }
@@ -30,13 +31,28 @@ function AddToSponsors(event){
     console.log(JSON.parse(localStorage.getItem("array")));
 }
 
+function ShowSponsorList(event) {
+  event.preventDefault();
+
+  var sortedArray = JSON.parse(localStorage.getItem("array"));
+  var sponsorList = document.getElementById("sponsorList");
+
+  for (var i = 0; i < sortedArray.length; i++) {
+    var sponsorObject = sortedArray[i];
+
+    var li = document.createElement("li");
+    li.innerHTML = `Name: ${sponsorObject.name}, Website: ${sponsorObject.website}`;
+    sponsorList.appendChild(li);
+  }
+}
+
 class Sellection extends React.Component{
-  render(){
+  render(){ //How to call multiple fuctions with one click
     return(
     <>
     <p>
       <button onClick={HideForm} id="sAddButton">Add Sponsor</button>{" "}
-      <button id="sShowSponsorButton">Show all sponsors</button>
+      <button onClick={ShowSponsorList} id="sShowSponsorButton">Show all sponsors</button> 
     </p>
     </>
     )
@@ -65,11 +81,22 @@ function AddSponsor(){
     );
 }
 
+function SponsorList(){
+  return(
+    <>
+    <ul id="sponsorList">
+      
+    </ul>
+    </>
+  )
+}
+
 export default function MyApp(){
     return(
         <div>
           <Sellection />
           <AddSponsor />
+          <SponsorList />
         </div>
     )
 }
